@@ -1,0 +1,1964 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroRisk Lens | AI Brain MRI Analysis</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #080d1a;
+  --panel: #111a2b;
+  --panel2: #162238;
+  --border: #263650;
+  --text: #edf4ff;
+  --muted: #899ab5;
+  --cyan: #36d9e8;
+  --blue: #638bff;
+  --purple: #a78bfa;
+  --green: #39d6a0;
+  --red: #ff657c;
+  --orange: #ffb45e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+}
+
+button, input { font: inherit; }
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 245px;
+  background: #0d1525;
+  border-right: 1px solid var(--border);
+  padding: 28px 18px;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 45px;
+}
+
+.logo {
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  background: linear-gradient(135deg, #1cbed1, #665cff);
+  box-shadow: 0 5px 25px #36d9e833;
+}
+
+.brand h2 {
+  font-family: Outfit, sans-serif;
+  font-size: 19px;
+  margin: 0;
+}
+
+.brand small {
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.nav-label {
+  color: #637590;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  margin: 25px 12px 12px;
+}
+
+.nav-item {
+  padding: 13px 14px;
+  border-radius: 10px;
+  color: var(--muted);
+  margin-bottom: 7px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-item.active {
+  background: linear-gradient(90deg, #19384a, #192b45);
+  color: var(--cyan);
+  border: 1px solid #285267;
+}
+
+.nav-icon { font-size: 17px; }
+
+.sidebar-note {
+  margin-top: 65px;
+  padding: 15px;
+  background: #131f32;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 38px;
+  max-width: 1600px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 15px;
+}
+
+.topbar h1 {
+  font-family: Outfit, sans-serif;
+  font-size: 27px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 7px;
+}
+
+.status-pill {
+  border: 1px solid #245c50;
+  background: #102c2b;
+  color: var(--green);
+  padding: 9px 14px;
+  border-radius: 30px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.status-dot {
+  display: inline-block;
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 7px;
+}
+
+.welcome {
+  background:
+    radial-gradient(circle at 85% 20%, #4b4bff30, transparent 30%),
+    linear-gradient(110deg, #142b43, #17223e 70%, #20234c);
+  border: 1px solid #344767;
+  border-radius: 18px;
+  padding: 26px 29px;
+  margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome h2 {
+  font-family: Outfit, sans-serif;
+  font-size: 22px;
+  margin: 0 0 9px;
+}
+
+.welcome p {
+  color: #b6c6df;
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.7;
+}
+
+.welcome-tag {
+  display: inline-block;
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+/* CARDS */
+
+.section-heading {
+  font-family: Outfit, sans-serif;
+  font-size: 17px;
+  margin: 28px 0 15px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.stat-card {
+  padding: 21px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  min-height: 125px;
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.stat-icon {
+  height: 35px;
+  width: 35px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #21334d;
+  font-size: 17px;
+}
+
+.stat-value {
+  font-family: Outfit, sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.stat-desc {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* UPLOAD */
+
+.upload-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.upload-header h3 {
+  font-family: Outfit, sans-serif;
+  margin: 0;
+  font-size: 17px;
+}
+
+.upload-header span {
+  color: var(--cyan);
+  font-size: 11px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  color: #c6d4e9;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.field input[type="text"] {
+  width: 100%;
+  padding: 13px;
+  background: #0b1424;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: white;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: var(--cyan);
+}
+
+.file-box {
+  border: 1px dashed #425c7e;
+  background: #0c1728;
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 100px;
+  transition: .2s;
+}
+
+.file-box:focus-within {
+  border-color: var(--cyan);
+}
+
+.file-box input {
+  display: block;
+  width: 100%;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+.file-icon {
+  font-size: 19px;
+  margin-bottom: 5px;
+}
+
+.file-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.file-hint {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.analyze-btn {
+  background: linear-gradient(100deg, #1bbdce, #6579ff);
+  color: #07111e;
+  border: 0;
+  border-radius: 9px;
+  padding: 13px 23px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 5px 20px #36d9e82b;
+}
+
+.analyze-btn:hover { filter: brightness(1.12); }
+
+.analyze-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.upload-hint {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* STATUS */
+
+#status {
+  display: none;
+  padding: 14px 17px;
+  border-radius: 10px;
+  margin-top: 18px;
+  background: #14243a;
+  border: 1px solid #344d6c;
+  color: var(--cyan);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+#status.error {
+  color: var(--red);
+  border-color: #663347;
+  background: #2c1826;
+}
+
+/* RESULTS */
+
+#result { display: none; }
+
+.result-banner {
+  margin-top: 28px;
+  padding: 17px 20px;
+  background: #102c2b;
+  border: 1px solid #285d51;
+  border-radius: 12px;
+  color: var(--green);
+  font-size: 13px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+  margin-top: 17px;
+}
+
+.result-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: 14px;
+  min-width: 0;
+}
+
+.result-card h3 {
+  font-family: Outfit, sans-serif;
+  font-size: 15px;
+  margin: 0 0 17px;
+}
+
+.tumor-number {
+  color: var(--cyan);
+  font-family: Outfit, sans-serif;
+  font-size: 27px;
+  font-weight: 600;
+}
+
+.tumor-caption {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 620px;
+}
+
+th {
+  text-align: left;
+  color: #91a4c0;
+  font-size: 10px;
+  letter-spacing: .5px;
+  padding: 13px 12px;
+  background: #17243a;
+}
+
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  color: #d8e3f3;
+}
+
+.tier {
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 5px 9px;
+  display: inline-block;
+  letter-spacing: .3px;
+}
+
+.tier-High { background: #49212d; color: #ff8296; border: 1px solid #6b2639; }
+.tier-Moderate { background: #48341f; color: #ffc477; border: 1px solid #6b4b24; }
+.tier-Low { background: #173b34; color: #56e4b0; border: 1px solid #1f5446; }
+.tier-NoTumor, .tier-No-tumor-detected, .tier-NOT_APPLICABLE, .tier-NOT-APPLICABLE { background: #1f2b3c; color: #9bb7d4; border: 1px solid #334b68; }
+.tier-TumorDetected { background: #49212d; color: #ff8296; border: 1px solid #6b2639; font-weight: 600; }
+
+.risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+.risk-table th {
+  background: #17243a;
+  color: #91a4c0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.risk-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #d8e3f3;
+}
+
+.risk-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.no-tumor-banner {
+  background: #102133;
+  border: 1px solid #23446b;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 14px;
+  color: #b0cce9;
+}
+
+.no-tumor-banner h4 {
+  margin: 0 0 6px 0;
+  color: #61b5ff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.no-tumor-banner p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.report-card {
+  margin-top: 17px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 23px;
+}
+
+.report-card h3 {
+  font-family: Outfit, sans-serif;
+  margin: 0 0 15px;
+}
+
+#report-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #c0cee1;
+  font-size: 12px;
+  line-height: 1.9;
+  margin: 0;
+}
+
+/* Analysis Details Card & Components */
+.analysis-details-card {
+  margin-top: 17px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 23px;
+}
+
+.analysis-details-heading {
+  font-family: Outfit, sans-serif;
+  margin: 0 0 16px;
+  font-size: 16px;
+  color: #e2ecf8;
+  font-weight: 600;
+}
+
+.analysis-details-subheading {
+  font-family: Outfit, sans-serif;
+  margin: 22px 0 12px;
+  font-size: 13px;
+  color: #9fb1cb;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.analysis-details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .analysis-details-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .analysis-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analysis-details-stat {
+  background: #0d1624;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.analysis-details-stat-label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 5px;
+}
+
+.analysis-details-stat-val {
+  color: #edf4ff;
+  font-size: 13px;
+  font-weight: 600;
+  word-break: break-word;
+  font-family: Outfit, 'DM Sans', sans-serif;
+}
+
+.analysis-details-table-wrap {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.analysis-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 500px;
+}
+
+.analysis-details-table th {
+  background: #17243a;
+  color: #91a4c0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.analysis-details-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #d8e3f3;
+}
+
+.analysis-details-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.analysis-details-table tr:last-child td {
+  border-bottom: none;
+}
+
+.disclaimer {
+  border: 1px solid #55472e;
+  background: #292318;
+  color: #eacb91;
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 10px;
+  line-height: 1.7;
+  margin-top: 25px;
+}
+
+footer {
+  color: #62748f;
+  text-align: center;
+  font-size: 10px;
+  margin-top: 28px;
+  padding-bottom: 20px;
+}
+
+@media(max-width: 900px) {
+  .sidebar { width: 190px; }
+  .main { padding: 25px 20px; }
+}
+
+@media(max-width: 650px) {
+  .sidebar { display: none; }
+  .main { padding: 22px 15px; }
+  .stats { grid-template-columns: 1fr; }
+  .form-grid, .result-grid { grid-template-columns: 1fr; }
+  .topbar h1 { font-size: 22px; }
+}
+
+.app { min-height: 100vh; }
+.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.logo { color: white; }
+.logo svg { width: 23px; height: 23px; }
+.nav-item { text-decoration: none; transition: background .2s, color .2s; }
+.nav-item:hover { color: var(--text); background: #14243a; }
+.nav-icon { display: inline-grid; width: 19px; height: 19px; place-items: center; }
+.nav-icon svg, .stat-icon svg, .file-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav-item.active { font-weight: 600; }
+.section-anchor { scroll-margin-top: 20px; }
+.stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.stat-icon { color: var(--cyan); }
+.stat-value { overflow-wrap: anywhere; }
+.model-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.model-chip { padding: 14px 16px; background: #0c1728; border: 1px solid var(--border); border-radius: 11px; }
+.model-chip strong { display: block; font-size: 12px; }
+.model-chip span { display: block; color: var(--muted); font-size: 11px; margin-top: 5px; line-height: 1.5; }
+.empty-state { padding: 22px; border: 1px dashed #425c7e; border-radius: 12px; color: var(--muted); text-align: center; font-size: 12px; line-height: 1.7; }
+.recent-list { display: grid; gap: 10px; }
+.case-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 14px; padding: 13px 15px; border: 1px solid var(--border); background: #0c1728; border-radius: 10px; }
+.case-row strong { display: block; font-size: 12px; overflow-wrap: anywhere; }
+.case-row small { display: block; color: var(--muted); font-size: 10px; margin-top: 4px; }
+.case-status { color: var(--green); font-size: 10px; }
+.case-status.pending { color: var(--muted); }
+.text-button { color: var(--cyan); background: transparent; border: 0; padding: 7px; cursor: pointer; font-size: 11px; }
+.file-box { position: relative; }
+.file-box.dragover { border-color: var(--cyan); background: #10243a; box-shadow: 0 0 0 2px #36d9e822; }
+.file-box:focus-within { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.file-picker { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.file-box label { display: block; cursor: pointer; min-height: 75px; }
+.file-box label:focus { outline: none; }
+.file-box .file-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; color: var(--cyan); background: #173044; margin-bottom: 8px; }
+.file-box[data-modality="t1"] { grid-column: 1 / -1; display: flex; align-items: center; gap: 18px; min-height: 0; padding: 10px 15px; background: #0a1321; border-style: solid; border-color: #22344e; }
+.file-box[data-modality="t1"] label { flex: 0 0 230px; display: flex; align-items: center; gap: 10px; min-height: 0; }
+.file-box[data-modality="t1"] .file-icon { flex: 0 0 30px; margin: 0; color: #8ca3bf; background: #142237; }
+.file-box[data-modality="t1"] .file-title { color: #c6d4e9; }
+.file-box[data-modality="t1"] .file-hint { color: #788ba5; }
+.file-box[data-modality="t1"] .file-meta { flex: 1; margin: 0; }
+.file-meta { color: var(--muted); font-size: 10px; margin-top: 6px; overflow-wrap: anywhere; }
+.file-meta.valid { color: var(--green); }
+.file-meta.invalid { color: var(--red); }
+.progress-track { display: none; width: 100%; height: 5px; margin-top: 10px; border-radius: 6px; overflow: hidden; background: #0b1424; }
+.progress-track.visible { display: block; }
+.progress-track span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple)); transition: width .15s; }
+.result-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.meta-chip { padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; color: #c6d4e9; background: #0c1728; font-size: 11px; }
+.region-legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 0 0 12px; color: #c6d4e9; font-size: 11px; }
+.legend-item { display: inline-flex; align-items: center; gap: 7px; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+.legend-wt { background: #36d9e8; }
+.legend-tc { background: #a78bfa; }
+.legend-et { background: #ffb45e; }
+#segmentation-preview { width: 100%; max-height: 520px; object-fit: contain; background: #080d1a; }
+.volume-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.volume-item { padding: 12px; background: #0c1728; border-radius: 9px; }
+.volume-item.wt { border-left: 3px solid #36d9e8; }
+.volume-item.tc { border-left: 3px solid #a78bfa; }
+.volume-item.et { border-left: 3px solid #ffb45e; }
+.volume-item strong { display: block; color: var(--cyan); font-family: Outfit, sans-serif; font-size: 17px; }
+.volume-item span { display: block; color: var(--muted); font-size: 10px; margin-top: 5px; }
+.future-view { margin-top: 16px; padding: 14px; border: 1px dashed var(--border); border-radius: 10px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.download-link { color: var(--cyan); text-decoration: none; font-size: 11px; padding: 8px 10px; border: 1px solid #2b5368; border-radius: 8px; }
+.download-link:hover { background: #142c3d; }
+.analyze-btn { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.disclaimer { margin-top: 25px; }
+
+@media(max-width: 900px) {
+  .sidebar { width: 205px; padding: 22px 12px; }
+  .main { padding: 25px 20px; }
+}
+@media(max-width: 650px) {
+  .app { display: block; }
+  .sidebar { display: block; position: relative; width: 100%; height: auto; padding: 12px 14px; border-right: 0; border-bottom: 1px solid var(--border); }
+  .brand { margin: 0 0 10px; }
+  .sidebar .nav-label, .sidebar-note { display: none; }
+  .sidebar nav { display: flex; gap: 6px; overflow-x: auto; }
+  .nav-item { flex: 0 0 auto; padding: 10px; margin: 0; }
+  .stats { grid-template-columns: 1fr; }
+  .model-list, .volume-list { grid-template-columns: 1fr; }
+  .case-row { grid-template-columns: 1fr auto; }
+  .case-row .case-date { display: none; }
+  .file-box[data-modality="t1"] { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .file-box[data-modality="t1"] label { flex-basis: auto; }
+  .file-box[data-modality="t1"] .file-meta { padding-left: 40px; }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m8 12 2.5 2.5L16.5 9" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></div>
+    <div>
+      <h2>NeuroRisk Lens</h2>
+      <small>AI BRAIN ANALYTICS</small>
+    </div>
+  </div>
+
+  <div class="nav-label">WORKSPACE</div>
+  <nav aria-label="Main navigation">
+    <a class="nav-item active" href="#dashboard"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span> Dashboard</a>
+    <a class="nav-item" href="#upload"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 15h8M12 8v7m-3-3 3 3 3-3"/></svg></span> MRI Analysis</a>
+    <a class="nav-item" id="segmentation-nav" href="#upload"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="m7 15 3-4 3 2 4-5"/></svg></span> Segmentation</a>
+    <a class="nav-item" href="#recent-analyses"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5m-9 4h5m-5 4h5"/></svg></span> Reports</a>
+  </nav>
+
+  <div class="sidebar-note">
+    <div style="color:var(--cyan);font-weight:700;margin-bottom:5px;">AI Research Platform</div>
+    Four-modality MRI segmentation with trained 2D and 3D models and tumor-region volume summaries.
+  </div>
+</aside>
+
+<main class="main">
+
+  <header class="topbar section-anchor" id="dashboard">
+    <div>
+      <h1>Dashboard Overview</h1>
+      <div class="subtitle">Welcome to your brain MRI analysis workspace.</div>
+    </div>
+    <div class="status-pill"><span class="status-dot"></span> Research Prototype</div>
+  </header>
+
+  <section class="welcome">
+    <div class="welcome-tag">NEURORISK LENS / OVERVIEW</div>
+    <h2>Detect. Map. Quantify. Explain.</h2>
+    <p>An AI-powered research platform for brain tumor segmentation<br>
+    with research-only tumor-region volume summaries.</p>
+  </section>
+
+  <h2 class="section-heading">Analysis Overview</h2>
+
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span>MRI cases</span>
+        <div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20v-1a5.5 5.5 0 0 1 11 0v1M16 5.5a3 3 0 0 1 0 5.8m1 3.2a5 5 0 0 1 3.5 4.8V20"/></svg></div>
+      </div>
+      <div class="stat-value" id="case-stat" aria-live="polite">Loading</div>
+      <div class="stat-desc">Uploaded cases in this workspace</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span>Completed analyses</span>
+        <div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7.5"/></svg></div>
+      </div>
+      <div class="stat-value" id="completed-stat" aria-live="polite">Loading</div>
+      <div class="stat-desc">Cases with a saved prediction</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span>Available models</span>
+        <div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9zM9 1v3m6-3v3M9 20v3m6-3v3M1 9h3m-3 6h3m16-6h3m-3 6h3"/></svg></div>
+      </div>
+      <div class="stat-value" id="model-stat" aria-live="polite">Loading</div>
+      <div class="stat-desc">Trained checkpoints reported by the API</div>
+    </div>
+  </section>
+
+  <section class="section-anchor" aria-labelledby="models-heading">
+    <h2 class="section-heading" id="models-heading">Model availability</h2>
+    <div class="model-list" id="model-list"><div class="empty-state">Loading model status…</div></div>
+  </section>
+
+  <section class="section-anchor" id="recent-analyses" aria-labelledby="recent-heading">
+    <h2 class="section-heading" id="recent-heading">Recent cases and reports</h2>
+    <div class="upload-panel">
+      <div class="recent-list" id="case-list" aria-live="polite"><div class="empty-state">Loading case records…</div></div>
+    </div>
+  </section>
+
+  <h2 class="section-heading section-anchor" id="upload">New MRI analysis</h2>
+  <section class="upload-panel">
+    <div class="upload-header">
+      <h3>Upload MRI Scans</h3>
+      <span>NEW ANALYSIS</span>
+    </div>
+
+    <form id="upload-form">
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="case_name">Patient / Case Name</label>
+          <input type="text" id="case_name" required
+          placeholder="e.g. patient-001">
+        </div>
+
+        <div class="field">
+          <label for="model_select">Segmentation Architecture</label>
+          <select id="model_select" style="width:100%;padding:13px;background:#0b1424;border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;cursor:pointer;">
+            <option value="attn_unet_2d" selected>2D Attention U-Net (trained four-channel)</option>
+            <option value="unet_3d">3D Volumetric U-Net (trained checkpoint)</option>
+          </select>
+        </div>
+
+        <div class="field" style="grid-column: 1 / -1;">
+          <label>Supported Format</label>
+          <div style="padding:13px;background:#0b1424;border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:12px;">
+            NIfTI volumes (.nii or .nii.gz). Primary modalities: T1CE, T2, and FLAIR. A separate redundant T1CE upload is no longer required.
+          </div>
+        </div>
+
+        <div class="file-box" data-modality="t1ce">
+          <label for="t1ce_file">
+            <span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5M8 10.5h5m-2.5-2.5v5"/></svg></span>
+            <span class="file-title">T1CE scan <span aria-hidden="true">*</span></span>
+            <span class="file-hint">Contrast-enhanced T1-weighted MRI · drop a NIfTI file or browse</span>
+          </label>
+          <input class="file-picker" type="file" id="t1ce_file" accept=".nii,.nii.gz" aria-describedby="t1ce-meta">
+          <div class="file-meta" id="t1ce-meta" role="status">Required · .nii or .nii.gz</div>
+        </div>
+
+        <div class="file-box" data-modality="t2">
+          <label for="t2_file">
+            <span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h8M8 16h4"/></svg></span>
+            <span class="file-title">T2 scan <span aria-hidden="true">*</span></span>
+            <span class="file-hint">T2-weighted MRI volume · drop a NIfTI file or browse</span>
+          </label>
+          <input class="file-picker" type="file" id="t2_file" accept=".nii,.nii.gz" aria-describedby="t2-meta">
+          <div class="file-meta" id="t2-meta" role="status">Required · .nii or .nii.gz</div>
+        </div>
+
+        <div class="file-box" data-modality="flair">
+          <label for="flair_file">
+            <span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12c2.2-5.8 4.4 5.8 6.7 0s4.4-5.8 6.6 0 4.5 5.8 6.7 0"/></svg></span>
+            <span class="file-title">FLAIR MRI scan <span aria-hidden="true">*</span></span>
+            <span class="file-hint">Fluid-attenuated MRI · drop a NIfTI file or browse</span>
+          </label>
+          <input class="file-picker" type="file" id="flair_file" accept=".nii,.nii.gz" aria-describedby="flair-meta">
+          <div class="file-meta" id="flair-meta" role="status">Required · .nii or .nii.gz</div>
+        </div>
+
+        <div class="file-box" data-modality="segmentation">
+          <label for="segmentation_file">
+            <span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="m7 15 3-4 3 2 4-5"/></svg></span>
+            <span class="file-title">Segmentation (optional)</span>
+            <span class="file-hint">Ground-truth mask for evaluation only · drop a NIfTI file or browse</span>
+          </label>
+          <input class="file-picker" type="file" id="segmentation_file" accept=".nii,.nii.gz" aria-describedby="segmentation-meta">
+          <div class="file-meta" id="segmentation-meta" role="status">Optional · used only when a valid aligned label mask is provided</div>
+        </div>
+
+        <div class="file-box" data-modality="t1" id="t1-container" style="display:none;">
+          <label for="t1_file">
+            <span class="file-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span>
+            <span class="file-title">T1 scan (optional)</span>
+            <span class="file-hint">Native T1 MRI · automatically defaults to T1CE</span>
+          </label>
+          <input class="file-picker" type="file" id="t1_file" accept=".nii,.nii.gz" aria-describedby="t1-meta">
+          <div class="file-meta" id="t1-meta" role="status">Optional · automatically uses T1CE if not provided</div>
+        </div>
+
+      </div>
+
+      <div class="action-row">
+        <button type="submit" class="analyze-btn" id="analyze-btn">
+          Upload and analyze
+        </button>
+        <span class="upload-hint" id="upload-hint">Select aligned MRI modalities (T1CE, T2, FLAIR) to begin.</span>
+      </div>
+    </form>
+  </section>
+
+  <div id="status" role="status" aria-live="polite"><span id="status-message"></span><div class="progress-track" id="upload-progress"><span></span></div></div>
+
+  <section id="result" class="section-anchor" aria-labelledby="results-heading">
+
+    <div class="result-banner" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <span id="result-status-text">Analysis completed</span>
+      <span id="model-badge" style="background:#17243a;border:1px solid #344767;padding:4px 10px;border-radius:6px;font-weight:600;font-size:11px;letter-spacing:0.3px;color:var(--cyan);">
+        Model: Trained checkpoint
+      </span>
+    </div>
+
+    <h2 class="section-heading" id="results-heading">Analysis results</h2>
+    <div class="result-meta" id="result-meta"></div>
+
+    <div class="result-grid" style="display:none;">
+      <div class="result-card">
+        <h3>Whole tumor (WT)</h3>
+        <div class="tumor-number" id="tumor-volume">—</div>
+        <div class="tumor-caption">Predicted volume in mm³</div>
+        <p id="tumor-summary" style="font-size:11px;color:var(--muted);line-height:1.7;"></p>
+      </div>
+
+      <div class="result-card">
+        <h3>Predicted region volumes</h3>
+        <div class="region-legend" aria-label="Region color legend">
+          <span class="legend-item"><i class="legend-dot legend-wt"></i>WT</span>
+          <span class="legend-item"><i class="legend-dot legend-tc"></i>TC</span>
+          <span class="legend-item"><i class="legend-dot legend-et"></i>ET</span>
+        </div>
+        <div id="region-volumes" class="volume-list"></div>
+      </div>
+    </div>
+
+    <div class="result-card" id="segmentation-output" style="display:none;">
+      <h3>Original MRI with predicted segmentation</h3>
+      <p class="tumor-caption">T1CE source volume with predicted class boundaries. Axial, coronal, and sagittal views are derived from this case's real MRI and prediction.</p>
+      <img id="segmentation-preview" alt="Tumor segmentation overlay"
+           style="display:block;max-width:100%;height:auto;margin:14px auto;border-radius:8px;">
+      <div class="future-view">3D reconstruction is not available in this interface yet. No 3D view is shown until it can be generated from the saved prediction.</div>
+      <div class="action-row">
+        <a id="mask-download" class="download-link" download>Download segmentation NIfTI</a>
+        <a id="wt-download" class="download-link" download>WT mask</a>
+        <a id="tc-download" class="download-link" download>TC mask</a>
+        <a id="et-download" class="download-link" download>ET mask</a>
+        <a id="report-download" class="download-link" download>Download JSON report</a>
+        <a id="plain-report-download" class="download-link" download>Download text report</a>
+      </div>
+    </div>
+
+    <!-- Anatomical Risk Mapping Card -->
+    <div class="result-card" id="risk-mapping-card" style="display:none;margin-top:17px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <h3 style="margin:0;">Atlas-Based Anatomical Risk Mapping</h3>
+        <div id="risk-summary-badges" style="display:flex;gap:8px;align-items:center;"></div>
+      </div>
+      <p class="tumor-caption" style="margin-top:6px;">
+        Harvard-Oxford atlas-based, registration-dependent estimate. Assesses proximity and volumetric invasion into eloquent brain structures.
+      </p>
+
+      <div id="no-tumor-alert" class="no-tumor-banner" style="display:none;">
+        <h4>🛡️ Status: No Tumor Detected by the Model</h4>
+        <p style="margin-bottom:8px;">The segmentation model identified zero tumor voxels in this volume (<code>tumor_detection_status = "NO_TUMOR_DETECTED"</code>). Whole tumor volume is 0 mm³, tumor overlap percentage is N/A, and eloquent structure risk is <strong>NOT_APPLICABLE</strong>. Brain zones are not classified with Low risk to avoid false reassurance.</p>
+        <div style="background:rgba(255,180,94,0.12);border-left:3px solid #ffb45e;padding:10px 14px;border-radius:6px;color:#fcd34d;font-size:11px;line-height:1.6;">
+          <strong>Clinical Disclaimer:</strong> A model’s negative prediction is not proof that a patient has no tumor. This is NOT a clinical clearance. The model can miss tumors (especially small, atypical or low-contrast ones) and has not been validated for clinical use. Review the images and the segmentation overlay manually.
+        </div>
+      </div>
+
+      <div class="table-container" id="risk-table-container" style="overflow-x:auto;">
+        <table class="risk-table" id="risk-table">
+          <thead>
+            <tr>
+              <th>Brain Region</th>
+              <th>Functional Role</th>
+              <th>Risk Tier</th>
+              <th>Overlap (Voxels / %)</th>
+              <th>Distance</th>
+              <th>Contact Status</th>
+            </tr>
+          </thead>
+          <tbody id="risk-table-body">
+          </tbody>
+        </table>
+        <div id="risk-table-footnote" style="font-size:0.78rem;color:#8ba2c4;margin-top:10px;line-height:1.5;">
+          * <strong>Anatomical &amp; Registration Uncertainty Footnote:</strong> Region boundaries are derived from the Harvard-Oxford atlas at a 25% probability threshold. Overlaps below 50 voxels (~50 mm³) or distances within 3.0 mm fall within spatial registration and atlas uncertainty margins and represent marginal contact rather than confirmed tissue invasion.
+        </div>
+      </div>
+    </div>
+
+    <!-- Plain Language Surgical Risk Report Card -->
+    <div class="report-card" id="plain-report-card" style="display:none;margin-top:17px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <h3 style="margin:0;">Plain Language Surgical Risk Report</h3>
+        <div style="display:flex;gap:10px;">
+          <button type="button" id="copy-report-btn" class="download-link" style="background:#1e2d42;cursor:pointer;border:none;">Copy report</button>
+          <a id="plain-report-btn-download" class="download-link" download>Download .txt</a>
+        </div>
+      </div>
+      <pre id="plain-report-text" style="white-space:pre-wrap;background:#0d1624;padding:18px;border-radius:8px;border:1px solid var(--border);color:#d0ddec;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.7;margin:0;"></pre>
+    </div>
+
+    <!-- Spatial Registration Quality Control (QC) Card -->
+    <div class="report-card" id="qc-registration-card" style="display:none;margin-top:17px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+        <h3 style="margin:0;">Spatial Registration Quality Control (QC)</h3>
+        <a id="qc-registration-download" class="download-link" download>Download QC Image</a>
+      </div>
+      <p class="tumor-caption" style="margin-top:0;margin-bottom:12px;">
+        Tri-planar anatomical overlay: Patient structural MRI with warped Harvard-Oxford functional region boundaries and tumor contour along orthogonal slices (axial, coronal, sagittal) centered through the tumor centroid.
+      </p>
+      <div style="background:#09101c;border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;">
+        <img id="qc-registration-preview" src="" alt="Registration Quality Control Multi-planar Overlay" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto;" />
+      </div>
+    </div>
+
+    <div class="report-card" style="display:none;" id="json-report-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="margin:0;">Raw JSON Metadata</h3>
+        <button type="button" id="toggle-json-btn" class="download-link" style="background:#17243a;cursor:pointer;border:none;font-size:11px;">Show JSON</button>
+      </div>
+      <pre id="report-text" style="display:none;"></pre>
+    </div>
+
+    <!-- Analysis Details Card -->
+    <div class="report-card analysis-details-card" id="analysis-details-card" style="display:none;margin-top:17px;">
+      <h3 class="analysis-details-heading">Analysis details</h3>
+
+      <!-- 1. Analysis details (card grid) -->
+      <div class="analysis-details-grid" id="analysis-details-grid">
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Case</div>
+          <div class="analysis-details-stat-val" id="ad-case">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Case ID</div>
+          <div class="analysis-details-stat-val" id="ad-case-id">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Prediction ID</div>
+          <div class="analysis-details-stat-val" id="ad-prediction-id">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Model</div>
+          <div class="analysis-details-stat-val" id="ad-model">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Checkpoint epoch</div>
+          <div class="analysis-details-stat-val" id="ad-epoch">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Device</div>
+          <div class="analysis-details-stat-val" id="ad-device">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Inference time</div>
+          <div class="analysis-details-stat-val" id="ad-inference-time">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Parameters</div>
+          <div class="analysis-details-stat-val" id="ad-parameters">—</div>
+        </div>
+      </div>
+
+      <!-- 2. Input and geometry -->
+      <h4 class="analysis-details-subheading">Input and geometry</h4>
+      <div class="analysis-details-grid" id="analysis-geometry-grid">
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Input modalities</div>
+          <div class="analysis-details-stat-val" id="ad-modalities">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Volume dimensions</div>
+          <div class="analysis-details-stat-val" id="ad-dimensions">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Voxel spacing (mm)</div>
+          <div class="analysis-details-stat-val" id="ad-spacing">—</div>
+        </div>
+        <div class="analysis-details-stat">
+          <div class="analysis-details-stat-label">Voxel volume (mm³)</div>
+          <div class="analysis-details-stat-val" id="ad-voxel-volume">—</div>
+        </div>
+      </div>
+
+      <!-- 3. Predicted tumor-region volumes -->
+      <h4 class="analysis-details-subheading">Predicted tumor-region volumes</h4>
+      <div class="analysis-details-table-wrap">
+        <table class="analysis-details-table" id="analysis-regions-table">
+          <thead>
+            <tr>
+              <th>Region</th>
+              <th>Voxels</th>
+              <th>Volume (mm³)</th>
+              <th>Volume (cm³)</th>
+            </tr>
+          </thead>
+          <tbody id="analysis-regions-tbody">
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4. Comparison with uploaded ground truth -->
+      <div id="analysis-gt-block" style="display:none;">
+        <h4 class="analysis-details-subheading">Comparison with uploaded ground truth</h4>
+        <div class="analysis-details-table-wrap">
+          <table class="analysis-details-table" id="analysis-gt-table">
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>Dice</th>
+                <th>IoU</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>GT volume (mm³)</th>
+              </tr>
+            </thead>
+            <tbody id="analysis-gt-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    RESEARCH / EDUCATIONAL PROTOTYPE — NOT A MEDICAL DEVICE.
+    Results are experimental and are not validated for clinical diagnosis,
+    treatment planning, or surgical decision-making. Predicted volumes are not
+    clinical risk scores and require qualified professional review.
+  </div>
+
+  <footer>NEURORISK LENS · AI-POWERED BRAIN MRI RESEARCH PLATFORM</footer>
+
+</main>
+</div>
+
+<script>
+const API = "";
+
+const form = document.getElementById("upload-form");
+const statusEl = document.getElementById("status");
+const resultEl = document.getElementById("result");
+const analyzeBtn = document.getElementById("analyze-btn");
+const modalityInputs = ["flair_file", "t1_file", "t1ce_file", "t2_file", "segmentation_file"];
+
+function setStatus(message, isError = false) {
+  statusEl.style.display = "block";
+  document.getElementById("status-message").textContent = message;
+  statusEl.classList.toggle("error", isError);
+}
+
+function formatBytes(bytes) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function isNifti(filename) {
+  const name = filename.toLowerCase();
+  return name.endsWith(".nii") || name.endsWith(".nii.gz");
+}
+
+function updateSelectedFile(input) {
+  const file = input.files[0];
+  const box = input.closest(".file-box");
+  const meta = box.querySelector(".file-meta");
+  const hint = box.querySelector(".file-hint");
+  meta.classList.remove("valid", "invalid");
+  if (!file) {
+    meta.textContent = box.dataset.modality === "segmentation"
+      ? "Optional · used only when a valid aligned label mask is provided"
+      : "Required · .nii or .nii.gz";
+    if (box.dataset.modality !== "segmentation") {
+      hint.textContent = `${box.dataset.modality.toUpperCase()} MRI · drop a NIfTI file or browse`;
+    }
+    return;
+  }
+  if (!isNifti(file.name)) {
+    meta.textContent = "Unsupported format. Choose a .nii or .nii.gz file.";
+    meta.classList.add("invalid");
+    input.value = "";
+    hint.textContent = "Drop a NIfTI file or browse";
+    return;
+  }
+  meta.textContent = `${file.name} · ${formatBytes(file.size)} · ready`;
+  meta.classList.add("valid");
+  hint.textContent = file.name;
+}
+
+modalityInputs.forEach(id => {
+  const input = document.getElementById(id);
+  const box = input.closest(".file-box");
+  input.addEventListener("change", () => updateSelectedFile(input));
+  ["dragenter", "dragover"].forEach(name => box.addEventListener(name, event => {
+    event.preventDefault();
+    box.classList.add("dragover");
+  }));
+  ["dragleave", "drop"].forEach(name => box.addEventListener(name, event => {
+    event.preventDefault();
+    box.classList.remove("dragover");
+  }));
+  box.addEventListener("drop", event => {
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    input.files = transfer.files;
+    updateSelectedFile(input);
+  });
+});
+
+function apiError(response, body) {
+  const detail = body && (body.detail || body.message);
+  return new Error(typeof detail === "string" ? detail : `Request failed (${response.status}).`);
+}
+
+async function getJson(url) {
+  const response = await fetch(url);
+  const body = await response.json();
+  if (!response.ok) throw apiError(response, body);
+  return body;
+}
+
+function renderDashboard(cases, predictions, models) {
+  const completed = predictions.filter(Boolean).length;
+  const available = models.filter(model => model.checkpoint_available).length;
+  document.getElementById("case-stat").textContent = cases.length.toLocaleString();
+  document.getElementById("completed-stat").textContent = completed.toLocaleString();
+  document.getElementById("model-stat").textContent = `${available} / ${models.length}`;
+
+  const modelList = document.getElementById("model-list");
+  modelList.innerHTML = "";
+  if (!models.length) {
+    modelList.innerHTML = '<div class="empty-state">The API did not report any configured models.</div>';
+  } else {
+    models.forEach(model => {
+      const card = document.createElement("div");
+      card.className = "model-chip";
+      const title = document.createElement("strong");
+      title.textContent = model.name === "unet_3d" ? "3D Volumetric U-Net" : "2D Attention U-Net";
+      const detail = document.createElement("span");
+      const availability = model.checkpoint_available ? "Checkpoint available" : "Checkpoint unavailable";
+      const loaded = model.loaded ? " · loaded in memory" : "";
+      detail.textContent = `${model.architecture || "Trained segmentation model"} · ${availability}${loaded}`;
+      card.append(title, detail);
+      modelList.append(card);
+    });
+  }
+
+  const list = document.getElementById("case-list");
+  list.innerHTML = "";
+  if (!cases.length) {
+    list.innerHTML = '<div class="empty-state">No MRI cases have been uploaded yet. Upload four aligned NIfTI modalities to start an analysis.</div>';
+    return;
+  }
+  cases.slice(0, 8).forEach((caseData, index) => {
+    const prediction = predictions[index];
+    const row = document.createElement("div");
+    row.className = "case-row";
+    const identity = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = caseData.case_name || `Case ${caseData.id}`;
+    const id = document.createElement("small");
+    id.textContent = `Case #${caseData.id}`;
+    identity.append(name, id);
+    const date = document.createElement("small");
+    date.className = "case-date";
+    const parsedDate = new Date(caseData.created_at);
+    date.textContent = Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toLocaleDateString();
+
+    const isRegFailed = prediction && prediction.risk_regions && prediction.risk_regions.some(r => r.mapping_status === "FAILED_REGISTRATION" || r.registration_quality === "FAILED");
+    const isNoTumor = !isRegFailed && prediction && (
+      prediction.tumor_detection_status === "NO_TUMOR_DETECTED" ||
+      prediction.is_no_tumor === true ||
+      (prediction.features && prediction.features.tumor_regions && prediction.features.tumor_regions.WT && prediction.features.tumor_regions.WT.voxel_count === 0) ||
+      (prediction.risk_regions && prediction.risk_regions.length > 0 && prediction.risk_regions.every(r => (r.tumor_detection_status === "NO_TUMOR_DETECTED" || r.risk_tier === "NOT_APPLICABLE" || r.risk_tier === "No tumor detected") && r.mapping_status !== "FAILED_REGISTRATION" && r.registration_quality !== "FAILED"))
+    );
+
+    const status = document.createElement("span");
+    if (!prediction) {
+      status.className = "case-status pending";
+      status.textContent = "Uploaded";
+    } else if (isNoTumor) {
+      status.className = "case-status no-tumor";
+      status.style.background = "#132738";
+      status.style.color = "#36d9e8";
+      status.style.border = "1px solid #204d6b";
+      status.textContent = "🛡️ No tumor detected by the model";
+    } else if (prediction.report_available) {
+      status.className = "case-status";
+      status.style.background = "#3b1723";
+      status.style.color = "#ff8296";
+      status.style.border = "1px solid #6b2639";
+      status.textContent = "⚠️ Tumor Detected";
+    } else {
+      status.className = "case-status pending";
+      status.textContent = "Prediction saved · report unavailable";
+    }
+    row.append(identity, date, status);
+    if (prediction && prediction.report_available) {
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = "text-button";
+      action.textContent = "View report";
+      action.dataset.predictionId = prediction.id;
+      action.dataset.caseName = caseData.case_name || `Case ${caseData.id}`;
+      row.append(action);
+    }
+    list.append(row);
+  });
+}
+
+async function loadDashboard() {
+  const [cases, modelResponse] = await Promise.all([
+    getJson(`${API}/cases/`),
+    getJson(`${API}/api/models`)
+  ]);
+  const predictions = await Promise.all(cases.map(async caseData => {
+    const response = await fetch(`${API}/cases/${caseData.id}/prediction`);
+    if (response.status === 404) return null;
+    const prediction = await response.json();
+    if (!response.ok) throw apiError(response, prediction);
+    if (!prediction) return null;
+    return {
+      ...prediction,
+      report_available: Boolean(prediction.mesh_paths && prediction.mesh_paths.report)
+    };
+  }));
+  renderDashboard(cases, predictions, modelResponse.models || []);
+
+  // Automatically render the latest analysis report on initial dashboard load
+  const completedIdx = predictions.findIndex(p => p && p.report_available);
+  if (completedIdx !== -1) {
+    const latestPred = predictions[completedIdx];
+    const latestCase = cases[completedIdx];
+    try {
+      const fullPred = await getJson(`${API}/api/results/${latestPred.id}`);
+      renderResult(fullPred, latestCase.case_name || `Case #${latestCase.id}`, false);
+    } catch {
+      renderResult(latestPred, latestCase.case_name || `Case #${latestCase.id}`, false);
+    }
+  }
+}
+
+function displayVolume(name, region, className) {
+  const item = document.createElement("div");
+  item.className = `volume-item ${className.replace("legend-", "")}`;
+  const value = document.createElement("strong");
+  value.textContent = `${Number(region.volume_mm3 || 0).toLocaleString()} mm³`;
+  const detail = document.createElement("span");
+  detail.textContent = `${name} · ${Number(region.volume_cm3 || 0).toFixed(2)} cm³`;
+  item.append(value, detail);
+  return item;
+}
+
+function formatRegionName(name) {
+  return name
+    .split("_")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function renderResult(prediction, caseName, autoScroll = true) {
+  const regions = prediction.tumor_regions || {};
+  const wholeTumor = regions.WT || { volume_mm3: 0, volume_cm3: 0, voxel_count: 0 };
+  const wtCount = wholeTumor.voxel_count || 0;
+  const wtWord = wtCount === 1 ? "voxel" : "voxels";
+  document.getElementById("tumor-summary").textContent =
+    `${Number(wtCount).toLocaleString()} ${wtWord} · ${Number(wholeTumor.volume_cm3 || 0).toFixed(2)} cm³`;
+  document.getElementById("tumor-volume").textContent =
+    `${Number(wholeTumor.volume_mm3 || 0).toLocaleString()} mm³`;
+  const volumeList = document.getElementById("region-volumes");
+  volumeList.replaceChildren();
+  [["WT", "legend-wt"], ["TC", "legend-tc"], ["ET", "legend-et"]].forEach(([name, color]) => {
+    const item = displayVolume(name, regions[name] || {}, color);
+    volumeList.append(item);
+  });
+  document.getElementById("report-text").textContent =
+    JSON.stringify(prediction, null, 2);
+  document.getElementById("result-status-text").textContent = "Real model prediction completed";
+  const metadata = document.getElementById("result-meta");
+  metadata.replaceChildren();
+  [
+    `Case: ${caseName || `#${prediction.case_id}`}`,
+    `Case ID: ${prediction.case_id}`,
+    `Inference: ${Number(prediction.inference_seconds || 0).toFixed(2)} s`
+  ].forEach(text => {
+    const chip = document.createElement("span");
+    chip.className = "meta-chip";
+    chip.textContent = text;
+    metadata.append(chip);
+  });
+
+  const modelName = prediction.model_name || "attn_unet_2d";
+  const modelBadge = document.getElementById("model-badge");
+  if (modelBadge) {
+    if (modelName === "unet_3d") {
+      modelBadge.textContent = "Model: 3D Volumetric U-Net";
+      modelBadge.style.color = "#ffc477";
+      modelBadge.style.borderColor = "#6d4a25";
+      modelBadge.style.background = "#2a1e12";
+    } else {
+      modelBadge.textContent = "Model: 2D Attention U-Net (four-channel)";
+      modelBadge.style.color = "var(--cyan)";
+      modelBadge.style.borderColor = "#344767";
+      modelBadge.style.background = "#17243a";
+    }
+  }
+
+  // --- Anatomical Risk Mapping Display ---
+  const riskCard = document.getElementById("risk-mapping-card");
+  const noTumorAlert = document.getElementById("no-tumor-alert");
+  const badgesContainer = document.getElementById("risk-summary-badges");
+  const tableBody = document.getElementById("risk-table-body");
+  tableBody.replaceChildren();
+  badgesContainer.replaceChildren();
+
+  const riskRegions = prediction.risk_regions || [];
+  const isRegFailedEarly = riskRegions.some(r => r.mapping_status === "FAILED_REGISTRATION" || r.registration_quality === "FAILED");
+  const detectionStatus = prediction.tumor_detection_status || (
+    (!isRegFailedEarly && (
+      prediction.is_no_tumor === true ||
+      wholeTumor.voxel_count === 0 ||
+      wholeTumor.volume_mm3 === 0 ||
+      (riskRegions.length > 0 && riskRegions.every(r => (r.tumor_detection_status === "NO_TUMOR_DETECTED" || r.risk_tier === "NOT_APPLICABLE" || r.risk_tier === "No tumor detected") && r.mapping_status !== "FAILED_REGISTRATION" && r.registration_quality !== "FAILED"))
+    ))
+      ? "NO_TUMOR_DETECTED" : "TUMOR_DETECTED"
+  );
+  const isNoTumor = (detectionStatus === "NO_TUMOR_DETECTED");
+
+  const resultStatusText = document.getElementById("result-status-text");
+  if (resultStatusText) {
+    if (isNoTumor) {
+      resultStatusText.textContent = "🛡️ Status: No Tumor Detected by the Model (NO_TUMOR_DETECTED)";
+      resultStatusText.style.color = "var(--cyan)";
+    } else {
+      resultStatusText.textContent = "⚠️ Status: Tumor Detected (TUMOR_DETECTED)";
+      resultStatusText.style.color = "#ff8296";
+    }
+  }
+
+  if (isNoTumor) {
+    document.getElementById("tumor-summary").textContent = "0 voxels · 0.00 cm³ · No tumor detected by the model";
+    document.getElementById("tumor-volume").textContent = "0 mm³";
+  }
+
+  if (riskRegions.length > 0) {
+    riskCard.style.display = "block";
+
+    const isRegFailed = riskRegions.some(r => r.mapping_status === "FAILED_REGISTRATION" || r.registration_quality === "FAILED");
+
+    if (isRegFailed) {
+      noTumorAlert.style.display = "none";
+      const failedBadge = document.createElement("span");
+      failedBadge.className = "tier tier-High";
+      failedBadge.style.background = "#3d141a";
+      failedBadge.style.color = "#ff8296";
+      failedBadge.style.borderColor = "#742433";
+      failedBadge.textContent = "⚠️ Registration unreliable: results not shown";
+      badgesContainer.append(failedBadge);
+
+      const failReason = riskRegions.find(r => r.mapping_reason)?.mapping_reason;
+      if (failReason) {
+        const reasonElem = document.createElement("div");
+        reasonElem.style.cssText = "font-size: 0.85rem; color: #ff8296; margin-top: 6px; width: 100%;";
+        reasonElem.textContent = failReason;
+        badgesContainer.append(reasonElem);
+      }
+    } else if (isNoTumor) {
+      noTumorAlert.style.display = "block";
+      const noTumorBadge = document.createElement("span");
+      noTumorBadge.className = "tier tier-NoTumor";
+      noTumorBadge.textContent = "🛡️ NO_TUMOR_DETECTED";
+      const naBadge = document.createElement("span");
+      naBadge.className = "tier tier-NoTumor";
+      naBadge.textContent = "Risk: NOT_APPLICABLE";
+      badgesContainer.append(noTumorBadge, naBadge);
+    } else {
+      noTumorAlert.style.display = "none";
+      const detectedBadge = document.createElement("span");
+      detectedBadge.className = "tier tier-TumorDetected";
+      detectedBadge.textContent = "⚠️ TUMOR_DETECTED";
+      badgesContainer.append(detectedBadge);
+
+      const highCount = riskRegions.filter(r => r.risk_tier === "High").length;
+      const modCount = riskRegions.filter(r => r.risk_tier === "Moderate").length;
+      const lowCount = riskRegions.filter(r => r.risk_tier === "Low").length;
+
+      const highBadge = document.createElement("span");
+      highBadge.className = "tier tier-High";
+      highBadge.textContent = `${highCount} High`;
+
+      const modBadge = document.createElement("span");
+      modBadge.className = "tier tier-Moderate";
+      modBadge.textContent = `${modCount} Moderate`;
+
+      const lowBadge = document.createElement("span");
+      lowBadge.className = "tier tier-Low";
+      lowBadge.textContent = `${lowCount} Low`;
+
+      badgesContainer.append(highBadge, modBadge, lowBadge);
+    }
+
+    riskRegions.forEach(r => {
+      const row = document.createElement("tr");
+
+      const nameCell = document.createElement("td");
+      nameCell.innerHTML = `<strong>${formatRegionName(r.region)}</strong>`;
+
+      const funcCell = document.createElement("td");
+      funcCell.style.color = "#9fb1cb";
+      funcCell.textContent = r.function || "—";
+
+      const tierCell = document.createElement("td");
+      const tierBadge = document.createElement("span");
+      const isRegionRegFailed = r.mapping_status === "FAILED_REGISTRATION" || r.registration_quality === "FAILED";
+      const isRegionNoTumor = isNoTumor || isRegionRegFailed || r.tumor_detection_status === "NO_TUMOR_DETECTED" || r.risk_tier === "NOT_APPLICABLE" || r.risk_tier === "No tumor detected";
+      const regionTier = isRegionNoTumor ? "NOT_APPLICABLE" : (r.eloquent_structure_risk || r.risk_tier);
+      const tierClass = isRegionNoTumor ? "tier-NOT_APPLICABLE" : `tier-${regionTier}`;
+      tierBadge.className = `tier ${tierClass}`;
+      tierBadge.textContent = regionTier;
+      tierCell.append(tierBadge);
+
+      const overlapCell = document.createElement("td");
+      if (isRegionNoTumor || r.overlap_pct == null) {
+        overlapCell.textContent = "N/A";
+        overlapCell.style.color = "#7e92ad";
+      } else {
+        const voxCount = r.overlap_voxels != null ? r.overlap_voxels : 0;
+        const voxWord = voxCount === 1 ? "voxel" : "voxels";
+        const voxStr = (r.overlap_voxels != null && r.overlap_voxels > 0)
+          ? `${voxCount.toLocaleString()} ${voxWord} (${r.overlap_pct}%)`
+          : `${r.overlap_pct}%`;
+        overlapCell.textContent = voxStr;
+      }
+
+      const distCell = document.createElement("td");
+      if (isRegionNoTumor || r.distance_mm == null) {
+        distCell.textContent = "N/A";
+        distCell.style.color = "#7e92ad";
+      } else if (r.contact_type === "marginal_contact") {
+        distCell.innerHTML = "<span style='color:#ffc477;'>contact (within uncertainty)</span>";
+      } else if (r.distance_mm === 0) {
+        distCell.innerHTML = "<span style='color:#ff8296;font-weight:600;'>0.0 mm (direct overlap)</span>";
+      } else if (r.distance_mm <= 3.0 || r.contact_type === "within_registration_uncertainty") {
+        distCell.innerHTML = `<span style='color:#ffc477;'>${r.distance_mm} mm (within uncertainty)</span>`;
+      } else {
+        distCell.textContent = `${r.distance_mm} mm`;
+      }
+
+      const contactCell = document.createElement("td");
+      if (isRegionNoTumor) {
+        contactCell.textContent = "N/A";
+        contactCell.style.color = "#7e92ad";
+      } else {
+        const contactLabel = r.contact_label || r.contact_type || "—";
+        let contactColor = "#9fb1cb";
+        if (r.contact_type === "confirmed_invasion") contactColor = "#ff8296";
+        else if (r.contact_type === "marginal_contact") contactColor = "#ffc477";
+        else if (r.contact_type === "within_registration_uncertainty") contactColor = "#ffd166";
+        contactCell.innerHTML = `<span style="color:${contactColor};font-size:0.85rem;">${contactLabel}</span>`;
+      }
+
+      row.append(nameCell, funcCell, tierCell, overlapCell, distCell, contactCell);
+      tableBody.append(row);
+    });
+  } else {
+    riskCard.style.display = "none";
+  }
+
+  // --- Plain Language Report Display ---
+  const plainReportCard = document.getElementById("plain-report-card");
+  const plainReportText = document.getElementById("plain-report-text");
+  if (prediction.risk_report) {
+    plainReportText.textContent = prediction.risk_report;
+    plainReportCard.style.display = "block";
+  } else {
+    plainReportCard.style.display = "none";
+  }
+
+  // --- Registration QC Image Display ---
+  const qcCard = document.getElementById("qc-registration-card");
+  const qcImg = document.getElementById("qc-registration-preview");
+  const qcDownload = document.getElementById("qc-registration-download");
+  if (qcCard && qcImg && qcDownload) {
+    prediction.prediction_id = prediction.prediction_id || prediction.id;
+    const qcUrl = `${API}/api/results/${prediction.prediction_id}/qc-registration`;
+    qcImg.onload = () => { qcCard.style.display = "block"; };
+    qcImg.onerror = () => { qcCard.style.display = "none"; };
+    qcImg.src = qcUrl;
+    qcDownload.href = qcUrl;
+  }
+
+  document.querySelector(".result-grid").style.display = "grid";
+  document.getElementById("json-report-card").style.display = "block";
+  document.getElementById("segmentation-output").style.display = "block";
+  prediction.prediction_id = prediction.prediction_id || prediction.id;
+  const root = `${API}/api/results/${prediction.prediction_id}`;
+  document.getElementById("segmentation-nav").setAttribute("href", "#result");
+  document.getElementById("segmentation-preview").src = `${root}/visualization`;
+  document.getElementById("segmentation-preview").alt = `Original T1CE MRI with predicted tumor class boundaries in axial, coronal, and sagittal views for case ${prediction.case_id || caseName}`;
+  document.getElementById("mask-download").href = `${root}/mask`;
+  document.getElementById("wt-download").href = `${root}/mask?region=wt`;
+  document.getElementById("tc-download").href = `${root}/mask?region=tc`;
+  document.getElementById("et-download").href = `${root}/mask?region=et`;
+  document.getElementById("report-download").href = `${root}/report`;
+  document.getElementById("plain-report-download").href = `${root}/plain-report`;
+  document.getElementById("plain-report-btn-download").href = `${root}/plain-report`;
+
+  // --- Analysis Details Card Display ---
+  const analysisCard = document.getElementById("analysis-details-card");
+  if (analysisCard) {
+    const details = prediction.analysis_details;
+    if (!details) {
+      analysisCard.style.display = "none";
+    } else {
+      analysisCard.style.display = "block";
+
+      // 1. Analysis details
+      const caseVal = details.case_name || caseName || (details.case_id != null ? `Case #${details.case_id}` : "—");
+      document.getElementById("ad-case").textContent = caseVal;
+      document.getElementById("ad-case-id").textContent = details.case_id != null ? String(details.case_id) : (prediction.case_id != null ? String(prediction.case_id) : "—");
+      document.getElementById("ad-prediction-id").textContent = details.prediction_id != null ? String(details.prediction_id) : (prediction.prediction_id || prediction.id || "—");
+
+      const modelVal = details.model_display_name || (
+        details.model_name === "unet_3d" ? "3D U-Net" : "2D Attention U-Net"
+      );
+      document.getElementById("ad-model").textContent = modelVal;
+      document.getElementById("ad-epoch").textContent = details.checkpoint_epoch != null ? String(details.checkpoint_epoch) : "—";
+      document.getElementById("ad-device").textContent = details.device || "—";
+
+      const secs = details.inference_seconds != null ? Number(details.inference_seconds).toFixed(2) : (prediction.inference_seconds != null ? Number(prediction.inference_seconds).toFixed(2) : null);
+      document.getElementById("ad-inference-time").textContent = secs != null ? `${secs} seconds` : "—";
+
+      const params = details.parameter_count != null ? Number(details.parameter_count).toLocaleString() : "—";
+      document.getElementById("ad-parameters").textContent = params;
+
+      // 2. Input and geometry
+      let mods = "FLAIR, T1, T1CE, T2";
+      if (Array.isArray(details.modalities) && details.modalities.length > 0) {
+        mods = details.modalities.map(m => String(m).toUpperCase()).join(", ");
+      } else if (Array.isArray(prediction.modalities) && prediction.modalities.length > 0) {
+        mods = prediction.modalities.map(m => String(m).toUpperCase()).join(", ");
+      }
+      document.getElementById("ad-modalities").textContent = mods;
+
+      const rawDims = details.volume_dimensions || details.input_shape_xyz;
+      const dims = Array.isArray(rawDims) && rawDims.length > 0 ? rawDims.join(" × ") : "—";
+      document.getElementById("ad-dimensions").textContent = dims;
+
+      const rawSpacing = details.voxel_spacing_mm || details.voxel_spacing_xyz_mm;
+      const spacing = Array.isArray(rawSpacing) && rawSpacing.length > 0
+        ? rawSpacing.map(s => Number(s).toFixed(2)).join(" × ") + " mm"
+        : "—";
+      document.getElementById("ad-spacing").textContent = spacing;
+
+      const rawVoxVol = details.voxel_volume_mm3 != null ? details.voxel_volume_mm3 : prediction.voxel_volume_mm3;
+      const voxVol = rawVoxVol != null ? `${Number(rawVoxVol).toFixed(2)} mm³` : "—";
+      document.getElementById("ad-voxel-volume").textContent = voxVol;
+
+      // 3. Predicted tumor-region volumes
+      const regTbody = document.getElementById("analysis-regions-tbody");
+      regTbody.replaceChildren();
+      const tumorRegs = details.tumor_regions || prediction.tumor_regions || {};
+      const regRows = [
+        { key: "WT", label: "Whole Tumor", color: "#36d9e8" },
+        { key: "TC", label: "Tumor Core", color: "#a78bfa" },
+        { key: "ET", label: "Enhancing Tumor", color: "#ffb45e" },
+      ];
+      regRows.forEach(({ key, label, color }) => {
+        const row = document.createElement("tr");
+        const rData = tumorRegs[key] || { voxel_count: 0, volume_mm3: 0, volume_cm3: 0 };
+        const vCount = rData.voxel_count != null ? Number(rData.voxel_count).toLocaleString() : "0";
+        const vMm3 = rData.volume_mm3 != null ? Number(rData.volume_mm3).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : "0.0";
+        const vCm3 = rData.volume_cm3 != null
+          ? Number(rData.volume_cm3).toFixed(3)
+          : (rData.volume_mm3 != null ? Number(rData.volume_mm3 / 1000.0).toFixed(3) : "0.000");
+
+        row.innerHTML = `
+          <td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:8px;"></span><strong>${key}</strong> <span style="color:#899ab5;font-size:11px;">(${label})</span></td>
+          <td>${vCount}</td>
+          <td>${vMm3}</td>
+          <td>${vCm3}</td>
+        `;
+        regTbody.append(row);
+      });
+
+      // 4. Comparison with uploaded ground truth
+      const gtBlock = document.getElementById("analysis-gt-block");
+      const gtMetrics = details.ground_truth_metrics || prediction.ground_truth_metrics;
+      const hasGt = Boolean(
+        details.has_ground_truth ||
+        (gtMetrics && Object.keys(gtMetrics).length > 0 && (gtMetrics.WT || gtMetrics.TC || gtMetrics.ET))
+      );
+
+      if (hasGt && gtMetrics && (gtMetrics.WT || gtMetrics.TC || gtMetrics.ET)) {
+        gtBlock.style.display = "block";
+        const gtTbody = document.getElementById("analysis-gt-tbody");
+        gtTbody.replaceChildren();
+
+        const gtRows = [
+          { key: "WT", label: "Whole Tumor", color: "#36d9e8" },
+          { key: "TC", label: "Tumor Core", color: "#a78bfa" },
+          { key: "ET", label: "Enhancing Tumor", color: "#ffb45e" },
+        ];
+        gtRows.forEach(({ key, label, color }) => {
+          const m = gtMetrics[key] || {};
+          const row = document.createElement("tr");
+          const dice = m.dice != null ? Number(m.dice).toFixed(4) : "—";
+          const iou = m.iou != null ? Number(m.iou).toFixed(4) : "—";
+          const prec = m.precision != null ? Number(m.precision).toFixed(4) : "—";
+          const rec = m.recall != null ? Number(m.recall).toFixed(4) : "—";
+          const gtVol = m.ground_truth_volume_mm3 != null
+            ? Number(m.ground_truth_volume_mm3).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+            : (m.gt_volume_mm3 != null ? Number(m.gt_volume_mm3).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : "—");
+
+          row.innerHTML = `
+            <td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:8px;"></span><strong>${key}</strong> <span style="color:#899ab5;font-size:11px;">(${label})</span></td>
+            <td><span style="color:#36d9e8;font-weight:600;">${dice}</span></td>
+            <td>${iou}</td>
+            <td>${prec}</td>
+            <td>${rec}</td>
+            <td>${gtVol}</td>
+          `;
+          gtTbody.append(row);
+        });
+      } else {
+        gtBlock.style.display = "none";
+      }
+    }
+  }
+
+  resultEl.style.display = "block";
+  if (autoScroll) {
+    resultEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function uploadWithProgress(formData) {
+  const progress = document.getElementById("upload-progress");
+  const bar = progress.querySelector("span");
+  progress.classList.add("visible");
+  bar.style.width = "0%";
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("POST", `${API}/api/upload`);
+    request.upload.addEventListener("progress", event => {
+      if (!event.lengthComputable) return;
+      const percent = Math.round(event.loaded / event.total * 100);
+      bar.style.width = `${percent}%`;
+      setStatus(`Uploading MRI files… ${percent}%`);
+    });
+    request.addEventListener("load", () => {
+      let body;
+      try { body = JSON.parse(request.responseText); }
+      catch { reject(new Error("The API returned an unreadable upload response.")); return; }
+      if (request.status < 200 || request.status >= 300) {
+        reject(apiError({ status: request.status }, body));
+        return;
+      }
+      bar.style.width = "100%";
+      resolve(body);
+    });
+    request.addEventListener("error", () => reject(new Error("Upload failed because the API could not be reached.")));
+    request.addEventListener("abort", () => reject(new Error("Upload was cancelled.")));
+    request.send(formData);
+  });
+}
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  resultEl.style.display = "none";
+
+  const caseName = document.getElementById("case_name").value.trim();
+  const flair = document.getElementById("flair_file").files[0];
+  const t1Input = document.getElementById("t1_file");
+  const t1 = t1Input && t1Input.files ? t1Input.files[0] : null;
+  const t1ce = document.getElementById("t1ce_file").files[0];
+  const t2 = document.getElementById("t2_file").files[0];
+  const segmentation = document.getElementById("segmentation_file").files[0];
+
+  if (!caseName || !flair || !t1ce || !t2) {
+    setStatus("Please enter a case name and select the required MRI files (T1CE, T2, FLAIR).", true);
+    return;
+  }
+  const filesToCheck = [flair, t1ce, t2];
+  if (t1) filesToCheck.push(t1);
+  const invalidFile = filesToCheck.find(file => !isNifti(file.name));
+  if (invalidFile) {
+    setStatus(`${invalidFile.name} is not a supported NIfTI file. Choose .nii or .nii.gz.`, true);
+    return;
+  }
+
+  analyzeBtn.disabled = true;
+  analyzeBtn.textContent = "Processing...";
+  const fd = new FormData();
+  fd.append("case_name", caseName);
+  fd.append("flair_file", flair);
+  fd.append("t1_file", t1 || t1ce);
+  fd.append("t1ce_file", t1ce);
+  fd.append("t2_file", t2);
+  if (segmentation) fd.append("segmentation_file", segmentation);
+
+  try {
+    setStatus("Uploading MRI scans...");
+    const caseData = await uploadWithProgress(fd);
+    document.getElementById("upload-progress").classList.remove("visible");
+
+    const modelSelect = document.getElementById("model_select");
+    const selectedModel = modelSelect ? modelSelect.value : "attn_unet_2d";
+
+    setStatus(`Running ${selectedModel === "unet_3d" ? "3D U-Net" : "2D Attention U-Net"} inference...`);
+    const predictRes = await fetch(`${API}/api/predict`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ case_id: caseData.case_id, model_name: selectedModel })
+    });
+
+    if (!predictRes.ok) {
+      throw apiError(predictRes, await predictRes.json());
+    }
+
+    const predictionResponse = await predictRes.json();
+    const resultRes = await fetch(`${API}${predictionResponse.result_url}`);
+    if (!resultRes.ok) {
+      throw new Error(await resultRes.text());
+    }
+    const prediction = await resultRes.json();
+
+    setStatus("Analysis completed successfully.");
+    renderResult(prediction, caseName);
+    await loadDashboard();
+
+  } catch (error) {
+    setStatus("Error: " + error.message, true);
+  } finally {
+    analyzeBtn.disabled = false;
+    analyzeBtn.textContent = "Upload and analyze";
+    document.getElementById("upload-progress").classList.remove("visible");
+  }
+});
+
+document.getElementById("case-list").addEventListener("click", async event => {
+  const button = event.target.closest("[data-prediction-id]");
+  if (!button) return;
+  try {
+    setStatus("Loading saved prediction report…");
+    const prediction = await getJson(`${API}/api/results/${button.dataset.predictionId}`);
+    renderResult(prediction, button.dataset.caseName);
+    setStatus("Saved prediction loaded.");
+  } catch (error) {
+    setStatus(`Could not load report: ${error.message}`, true);
+  }
+});
+
+document.querySelectorAll(".nav-item").forEach(link => {
+  link.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+    link.classList.add("active");
+  });
+});
+
+document.getElementById("toggle-json-btn")?.addEventListener("click", () => {
+  const pre = document.getElementById("report-text");
+  const btn = document.getElementById("toggle-json-btn");
+  if (pre.style.display === "none") {
+    pre.style.display = "block";
+    btn.textContent = "Hide JSON";
+  } else {
+    pre.style.display = "none";
+    btn.textContent = "Show JSON";
+  }
+});
+
+document.getElementById("copy-report-btn")?.addEventListener("click", async () => {
+  const text = document.getElementById("plain-report-text").textContent;
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    const btn = document.getElementById("copy-report-btn");
+    const orig = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  } catch (err) {
+    setStatus("Failed to copy report to clipboard.", true);
+  }
+});
+
+loadDashboard().catch(error => {
+  document.getElementById("case-stat").textContent = "—";
+  document.getElementById("completed-stat").textContent = "—";
+  document.getElementById("model-stat").textContent = "—";
+  document.getElementById("case-list").innerHTML = '<div class="empty-state">Dashboard data is unavailable. Check that the API is running, then refresh.</div>';
+  document.getElementById("model-list").innerHTML = '<div class="empty-state">Model status could not be loaded from the API.</div>';
+  setStatus(`Dashboard data could not be loaded: ${error.message}`, true);
+});
+</script>
+</body>
+</html>

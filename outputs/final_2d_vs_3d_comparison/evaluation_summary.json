@@ -1,0 +1,191 @@
+{
+  "evaluation_scope": "NeuroRisk Lens Advanced 2D vs 3D Model Accuracy Evaluation",
+  "cohort_audit": {
+    "evaluated_patient_id": "BraTS2021_00495",
+    "source_dataset": "BraTS 2021 RSNA-ASNR-MICCAI Challenge",
+    "split_file": "data/splits/brats2021_3d_80_20.json",
+    "split_status": "TRAINING SET (#403 of 1,001 training cases)",
+    "limitation_statement": "Single available complete 4-channel MRI scan on system is from training set. Evaluates model convergence, fidelity, and inference efficiency.",
+    "num_patients": 1,
+    "num_tumor_bearing_axial_slices": 70
+  },
+  "models": {
+    "2d_attention_unet": {
+      "checkpoint_path": "runs/2d_attention_unet/checkpoints/best.pt",
+      "sha256": "577db698038457e876d371ef6dc7b8b8f408ae268376a82a45a36346f74f2766",
+      "parameters": 2029816,
+      "inference_seconds": 38.8813597910339,
+      "peak_memory_mb": 612.6,
+      "device": "cpu"
+    },
+    "3d_unet": {
+      "checkpoint_path": "outputs/3d_unet/full_80_20/checkpoints/best.pt",
+      "sha256": "6513e33573c184723ead18013f40155eddd3e8a1cb61621a9cc606ddd2051be4",
+      "parameters": 1191413,
+      "inference_seconds": 19.042882167035714,
+      "peak_memory_mb": 477.0,
+      "device": "cpu"
+    }
+  },
+  "patient_level_metrics": {
+    "2d_attention_unet": {
+      "WT": {
+        "region_name": "Whole Tumour",
+        "labels": [
+          1,
+          2,
+          4
+        ],
+        "dice": 0.9321542061830275,
+        "iou": 0.8729296042372178,
+        "precision": 0.9125037377137731,
+        "recall": 0.9526696340456385,
+        "predicted_voxels": 103673,
+        "ground_truth_voxels": 99302,
+        "predicted_volume_cm3": 103.673,
+        "ground_truth_volume_cm3": 99.302,
+        "relative_volume_diff_pct": 4.401724033755614
+      },
+      "TC": {
+        "region_name": "Tumour Core",
+        "labels": [
+          1,
+          4
+        ],
+        "dice": 0.9422863375949528,
+        "iou": 0.8908709143950796,
+        "precision": 0.9803296119085593,
+        "recall": 0.9070854223819884,
+        "predicted_voxels": 48906,
+        "ground_truth_voxels": 52855,
+        "predicted_volume_cm3": 48.906,
+        "ground_truth_volume_cm3": 52.855000000000004,
+        "relative_volume_diff_pct": -7.471383975026015
+      },
+      "ET": {
+        "region_name": "Enhancing Tumour",
+        "labels": [
+          4
+        ],
+        "dice": 0.871789676308191,
+        "iou": 0.7727191091954023,
+        "precision": 0.9499190462172505,
+        "recall": 0.8055356195587731,
+        "predicted_voxels": 27176,
+        "ground_truth_voxels": 32047,
+        "predicted_volume_cm3": 27.176000000000002,
+        "ground_truth_volume_cm3": 32.047000000000004,
+        "relative_volume_diff_pct": -15.199550659968173
+      }
+    },
+    "3d_unet": {
+      "WT": {
+        "region_name": "Whole Tumour",
+        "labels": [
+          1,
+          2,
+          4
+        ],
+        "dice": 0.8402165610603229,
+        "iou": 0.7244598714295182,
+        "precision": 0.803327178695768,
+        "recall": 0.880656985760609,
+        "predicted_voxels": 108861,
+        "ground_truth_voxels": 99302,
+        "predicted_volume_cm3": 108.861,
+        "ground_truth_volume_cm3": 99.302,
+        "relative_volume_diff_pct": 9.626190811866831
+      },
+      "TC": {
+        "region_name": "Tumour Core",
+        "labels": [
+          1,
+          4
+        ],
+        "dice": 0.7952633493941366,
+        "iou": 0.6601138506031153,
+        "precision": 0.9530151683314836,
+        "recall": 0.682319553495412,
+        "predicted_voxels": 37842,
+        "ground_truth_voxels": 52855,
+        "predicted_volume_cm3": 37.842,
+        "ground_truth_volume_cm3": 52.855000000000004,
+        "relative_volume_diff_pct": -28.404124491533437
+      },
+      "ET": {
+        "region_name": "Enhancing Tumour",
+        "labels": [
+          4
+        ],
+        "dice": 0.6275184901810763,
+        "iou": 0.45721453126451733,
+        "precision": 0.9838720426524492,
+        "recall": 0.46066714513058943,
+        "predicted_voxels": 15005,
+        "ground_truth_voxels": 32047,
+        "predicted_volume_cm3": 15.005,
+        "ground_truth_volume_cm3": 32.047000000000004,
+        "relative_volume_diff_pct": -53.17814460011857
+      }
+    }
+  },
+  "slice_level_paired_statistics": {
+    "WT": {
+      "mean_2d": 0.895122117937703,
+      "std_2d": 0.21066409294947105,
+      "median_2d": 0.9636536666183453,
+      "mean_3d": 0.8520834461464035,
+      "std_3d": 0.2030568320388685,
+      "median_3d": 0.9191934566361516,
+      "mean_difference_2d_minus_3d": 0.043038671791299554,
+      "median_difference": 0.038619379313824476,
+      "bootstrap_95ci_diff": [
+        0.022818601459261213,
+        0.06188450770302062
+      ],
+      "paired_t_stat": 4.090453313405048,
+      "paired_t_pvalue": 0.00011488136176206712,
+      "wilcoxon_stat": 129.0,
+      "wilcoxon_pvalue": 1.1311645874823677e-10,
+      "significant_p05": true
+    },
+    "TC": {
+      "mean_2d": 0.903566884413111,
+      "std_2d": 0.17803103370272283,
+      "median_2d": 0.9491529542064332,
+      "mean_3d": 0.7339923250079732,
+      "std_3d": 0.2967383938054363,
+      "median_3d": 0.8325172230848666,
+      "mean_difference_2d_minus_3d": 0.16957455940513766,
+      "median_difference": 0.0880183277284412,
+      "bootstrap_95ci_diff": [
+        0.11687257155462606,
+        0.22745074615981054
+      ],
+      "paired_t_stat": 5.796996164062277,
+      "paired_t_pvalue": 1.8471330327031824e-07,
+      "wilcoxon_stat": 27.0,
+      "wilcoxon_pvalue": 6.268454258576271e-11,
+      "significant_p05": true
+    },
+    "ET": {
+      "mean_2d": 0.8518603213484381,
+      "std_2d": 0.17103589469259392,
+      "median_2d": 0.8799113895770748,
+      "mean_3d": 0.647991631933133,
+      "std_3d": 0.2580940708353315,
+      "median_3d": 0.7036174402144577,
+      "mean_difference_2d_minus_3d": 0.20386868941530512,
+      "median_difference": 0.1787524319761128,
+      "bootstrap_95ci_diff": [
+        0.1574626742955509,
+        0.25339244489484186
+      ],
+      "paired_t_stat": 8.349574798164875,
+      "paired_t_pvalue": 4.586381589324337e-12,
+      "wilcoxon_stat": 24.0,
+      "wilcoxon_pvalue": 1.2124763521751185e-10,
+      "significant_p05": true
+    }
+  }
+}
